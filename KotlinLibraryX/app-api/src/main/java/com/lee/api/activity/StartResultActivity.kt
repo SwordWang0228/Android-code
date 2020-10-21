@@ -25,6 +25,16 @@ class StartResultActivity :
     }
 
     private val requestPicture = prepareCall(ActivityResultContracts.TakePicture()) {
+        toast("success")
+        binding.ivPicture.setImageBitmap(it)
+    }
+
+    private val requestPictureView = prepareCall(ActivityResultContracts.TakePicturePreview()) {
+        binding.ivPicture.setImageBitmap(it)
+    }
+
+    private val requestVideo = prepareCall(ActivityResultContracts.TakeVideo()){
+        toast("video")
         binding.ivPicture.setImageBitmap(it)
     }
 
@@ -37,6 +47,9 @@ class StartResultActivity :
             //权限申请
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
                 requestPermission.launch(Manifest.permission.CAMERA)
+                requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                return@setOnClickListener
             }
 
             val file =
@@ -48,8 +61,10 @@ class StartResultActivity :
                 Uri.fromFile(file)
             }
 
-            requestPicture.launch(uri)
-
+//            requestPicture.launch(uri)
+//            requestPicture.launch(null)
+//            requestPictureView.launch(null)
+            requestVideo.launch(null)
         }
     }
 
